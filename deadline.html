@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopify Additional Scripts shutdown — check if your tracking breaks on August 26</title>
+<meta name="description" content="On 26 August 2026 Shopify stops running Additional Scripts. Purchase tracking in that box stops firing with no error. Here's how to check your store in 60 seconds.">
+<link rel="icon" type="image/svg+xml" href="kumo-mark.svg">
+<meta property="og:title" content="Does your Shopify tracking break on August 26?">
+<meta property="og:description" content="Check your store in 60 seconds. No install, no signup.">
+<style>
+  :root {
+    --bg:#0c0c0f; --panel:#141418; --sunk:#101014; --ink:#f5f4f0; --ink-2:#9b9a94;
+    --ink-3:#6a6a72; --line:#242429; --accent:#5ec8e5;
+    --warn:#fab219; --good:#0ca30c; --critical:#d03b3b;
+    --mono: ui-monospace,'SF Mono',SFMono-Regular,Menlo,monospace;
+  }
+  * { margin:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--ink);
+    font:16px/1.7 -apple-system,"SF Pro Text","Segoe UI",Inter,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:720px; margin:0 auto; padding:0 24px 80px; }
+
+  header { padding:28px 0; display:flex; align-items:center; gap:12px; }
+  header svg { width:28px; height:28px; }
+  .word { font-size:12px; letter-spacing:.28em; font-weight:600; }
+  .word span { color:var(--ink-3); font-weight:400; }
+  nav { margin-left:auto; display:flex; gap:20px; font-size:13.5px; }
+  nav a { color:var(--ink-2); text-decoration:none; }
+  nav a:hover { color:var(--ink); }
+
+  .count { margin:5vh 0 0; border:1px solid var(--line); border-radius:14px;
+    background:var(--panel); padding:22px 26px; display:flex; align-items:baseline;
+    gap:16px; flex-wrap:wrap; }
+  .count .n { font-size:44px; font-weight:660; letter-spacing:-.02em;
+    color:var(--warn); font-variant-numeric:tabular-nums; }
+  .count .l { font:11.5px/1.5 var(--mono); letter-spacing:.14em; color:var(--ink-3);
+    text-transform:uppercase; }
+
+  h1 { font-size:clamp(30px,5.4vw,44px); line-height:1.14; letter-spacing:-.02em;
+    font-weight:660; margin:34px 0 20px; }
+  h2 { font-size:21px; font-weight:640; letter-spacing:-.01em; margin:44px 0 14px; }
+  h3 { font-size:16px; font-weight:640; margin:26px 0 8px; }
+  p { color:var(--ink-2); margin-bottom:16px; }
+  p strong, li strong { color:var(--ink); font-weight:600; }
+  a { color:var(--accent); }
+
+  .lede { font-size:18.5px; color:var(--ink-2); }
+
+  ol, ul { color:var(--ink-2); margin:0 0 18px 22px; }
+  li { margin-bottom:10px; }
+
+  .step { border:1px solid var(--line); border-radius:12px; background:var(--panel);
+    padding:20px 22px; margin-bottom:12px; }
+  .step .k { font:10.5px/1 var(--mono); letter-spacing:.2em; color:var(--ink-3);
+    text-transform:uppercase; margin-bottom:10px; }
+  .step p:last-child { margin-bottom:0; }
+  code { font:13.5px/1.5 var(--mono); background:var(--sunk); border:1px solid var(--line);
+    border-radius:5px; padding:2px 6px; color:var(--ink); }
+
+  .verdict { border-left:3px solid var(--warn); background:var(--panel);
+    padding:16px 20px; border-radius:0 10px 10px 0; margin:14px 0 22px; }
+  .verdict.safe { border-left-color:var(--good); }
+  .verdict p:last-child { margin-bottom:0; }
+
+  table { width:100%; border-collapse:collapse; font-size:14.5px; margin-bottom:20px; }
+  th, td { text-align:left; padding:9px 0; border-bottom:1px solid var(--line);
+    color:var(--ink-2); vertical-align:top; }
+  th { color:var(--ink-3); font:10.5px/1.4 var(--mono); letter-spacing:.14em;
+    text-transform:uppercase; font-weight:600; }
+  td:first-child { color:var(--ink); font-weight:500; padding-right:18px; white-space:nowrap; }
+
+  .cta { border:1px solid var(--line); border-radius:14px; background:var(--panel);
+    padding:26px; margin:40px 0 0; }
+  .cta h3 { margin-top:0; }
+  .cta a.btn { display:inline-block; margin-top:14px; background:var(--accent);
+    color:#0c0c0f; font-weight:640; text-decoration:none; padding:11px 22px;
+    border-radius:9px; font-size:15px; }
+
+  footer { margin-top:56px; padding-top:26px; border-top:1px solid var(--line);
+    color:var(--ink-3); font-size:13px; display:flex; justify-content:space-between;
+    gap:14px; flex-wrap:wrap; }
+  footer a { color:var(--ink-3); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <rect width="64" height="64" rx="14" fill="#141418" stroke="#242429"/>
+      <g stroke="#f5f4f0" stroke-width="2.2" stroke-linecap="round" fill="none">
+        <path d="M14 50 L14 14"/><path d="M14 50 L32 17"/><path d="M14 50 L47 32"/><path d="M14 50 L50 50"/>
+        <path d="M14 32 A18 18 0 0 1 32 50"/><path d="M14 22 A28 28 0 0 1 42 50"/>
+      </g>
+      <circle cx="14" cy="50" r="4.6" fill="#f5f4f0"/>
+    </svg>
+    <div class="word">KUMO <span>INDUSTRIES</span></div>
+    <nav><a href="/">Index</a><a href="/work.html">Work</a></nav>
+  </header>
+
+  <div class="count">
+    <div class="n" id="days">—</div>
+    <div class="l">days until Shopify<br>stops running Additional Scripts</div>
+  </div>
+
+  <h1>Does your checkout tracking break on 26 August?</h1>
+
+  <p class="lede">On 26 August 2026, Shopify stops running the code in
+    <strong>Settings → Checkout → Additional scripts</strong>. Anything in that box
+    stops firing. There is no error and no warning email — your conversion numbers
+    just go flat, and most people find out weeks later when they wonder why ad
+    performance collapsed.</p>
+
+  <p>This page tells you whether it affects you. It takes about a minute and you
+    don't have to install anything.</p>
+
+  <h2>Check your store in 60 seconds</h2>
+
+  <div class="step">
+    <div class="k">Step 1</div>
+    <p>Open your Shopify admin and go to
+      <strong>Settings → Checkout</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="k">Step 2</div>
+    <p>Scroll to <strong>Order status page</strong> and find the
+      <strong>Additional scripts</strong> box.</p>
+  </div>
+
+  <div class="step">
+    <div class="k">Step 3</div>
+    <p>Look at what's in it.</p>
+  </div>
+
+  <h3>If the box is empty</h3>
+  <div class="verdict safe">
+    <p>You're fine. Nothing breaks on 26 August. You can stop reading.</p>
+  </div>
+
+  <h3>If there's anything in it</h3>
+  <div class="verdict">
+    <p>Some or all of it stops working. What matters is <em>what</em> the code does
+      — the table below tells you which parts you actually lose.</p>
+  </div>
+
+  <h2>What each thing means</h2>
+
+  <table>
+    <thead><tr><th>If you see</th><th>What happens on 26 August</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>gtag</code><br><code>G-XXXXXXX</code></td>
+        <td><strong>GA4 purchase tracking stops.</strong> Sessions and pageviews keep
+          working — only the purchase event dies, so revenue vanishes from GA4 while
+          traffic looks normal. This is the one people miss longest.</td>
+      </tr>
+      <tr>
+        <td><code>fbq</code><br><code>AW-</code></td>
+        <td><strong>Meta Pixel and Google Ads conversion tracking stop.</strong> Your
+          ad platforms stop learning from purchases, so optimisation degrades before
+          the reporting gap is obvious.</td>
+      </tr>
+      <tr>
+        <td><code>ttq</code></td>
+        <td><strong>TikTok Pixel purchase events stop.</strong></td>
+      </tr>
+      <tr>
+        <td>A named app's snippet<br>(Klaviyo, Recharge, etc.)</td>
+        <td>Usually fine — most established apps moved to their own official
+          integration and the leftover snippet is dead code. Check the app's docs
+          rather than assuming.</td>
+      </tr>
+      <tr>
+        <td>A custom webhook or<br>internal script</td>
+        <td>It stops. If anything downstream depends on it — a warehouse, an ERP, a
+          spreadsheet — that breaks too, and silently.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What to do about it</h2>
+
+  <p>The fix is the same regardless of who does it: each tag has to be rebuilt as a
+    <strong>Web Pixel</strong>, which is the sanctioned replacement Shopify wants
+    you on. It runs in a sandbox, it survives the upgrade, and it keeps working.</p>
+
+  <p>Three routes, honestly:</p>
+
+  <ol>
+    <li><strong>Do it yourself.</strong> If you have one GA4 tag and you're
+      comfortable in the admin, this is genuinely a 30-minute job. Shopify's own
+      docs on customer events cover it.</li>
+    <li><strong>Ask your developer.</strong> If someone built your store, send them
+      this page. They'll know what to do with it.</li>
+    <li><strong>Use a tool.</strong> Several exist now, including ours. Worth it if
+      you have several tags, or if you want a server-side copy as a backstop.</li>
+  </ol>
+
+  <h3>One thing worth knowing whichever route you take</h3>
+
+  <p>Browser-based tracking misses orders even when it's set up correctly — ad
+    blockers, closed tabs, flaky connections. A <strong>server-side copy</strong>
+    sends the order from your store rather than the shopper's browser, so it arrives
+    regardless. If both legs share one order ID, nothing gets counted twice.</p>
+
+  <p>That's the part most migration tools skip, and it's the part that still matters
+    on 27 August.</p>
+
+  <div class="cta">
+    <h3>Holdfast</h3>
+    <p>Scans your Additional Scripts, shows you exactly what it found, rebuilds GA4,
+      Meta and TikTok as official Web Pixels, and adds the server-side leg with
+      deduplication. Built by us.</p>
+    <p style="color:var(--ink-3);font-size:14px">Currently in review on the Shopify
+      App Store. This page stays up either way — the deadline matters more than
+      the product.</p>
+  </div>
+
+  <footer>
+    <div>© 2026 Kumo Industries</div>
+    <div><a href="mailto:hq@kumoindustries.com">hq@kumoindustries.com</a></div>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  const deadline = new Date('2026-08-26T00:00:00-04:00');
+  const el = document.getElementById('days');
+  const days = Math.ceil((deadline - Date.now()) / 86400000);
+  el.textContent = days > 0 ? days : 0;
+  if (days <= 0) {
+    el.style.color = 'var(--critical)';
+    document.querySelector('.count .l').innerHTML =
+      'Shopify has already stopped running<br>Additional Scripts';
+  }
+})();
+</script>
+</body>
+</html>
