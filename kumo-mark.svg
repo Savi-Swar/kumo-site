@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kumo Industries mark">
+  <!-- The mark: an orb-web quadrant spun from the corner — the watcher's web. -->
+  <rect width="64" height="64" rx="14" fill="#101013"/>
+  <g stroke="#f5f4f0" stroke-width="2.2" stroke-linecap="round" fill="none">
+    <!-- radial threads -->
+    <path d="M14 50 L14 14"/>
+    <path d="M14 50 L32 17"/>
+    <path d="M14 50 L47 32"/>
+    <path d="M14 50 L50 50"/>
+    <!-- web rings -->
+    <path d="M14 32 A18 18 0 0 1 32 50"/>
+    <path d="M14 22 A28 28 0 0 1 42 50"/>
+  </g>
+  <!-- the spider, at the center of it all -->
+  <circle cx="14" cy="50" r="4.6" fill="#f5f4f0"/>
+</svg>
